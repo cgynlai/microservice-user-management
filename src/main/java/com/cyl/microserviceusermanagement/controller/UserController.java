@@ -5,6 +5,7 @@ import com.cyl.microserviceusermanagement.model.Role;
 import com.cyl.microserviceusermanagement.model.User;
 import com.cyl.microserviceusermanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,14 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
+    @GetMapping("/service/services")
+    public ResponseEntity<?> getServices(){
+        return new ResponseEntity<>(discoveryClient.getServices(), HttpStatus.OK);
+    }
 
     @PostMapping("/service/registration")
     public ResponseEntity<?> saveUser(@RequestBody User user) {
